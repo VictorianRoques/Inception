@@ -1,0 +1,12 @@
+version: "3.4"
+services:
+ web:
+   build:
+    context: ./requirements/nginx/
+   ports:
+     - "443:443"
+ php:
+  build:
+   context: ./requirements/php
+  ports:
+    - "9000:9000"

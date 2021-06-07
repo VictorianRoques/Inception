@@ -4,9 +4,9 @@ RUN apt update && apt install -y \
 	nginx \
 	openssl
 
-RUN mkdir -p /var/www/viroques
+RUN mkdir -p /var/www/html/viroques
 COPY viroques.conf . 
-COPY index.html /var/www/viroques
+COPY index.php /var/www/html/viroques
 
 RUN mv viroques.conf /etc/nginx/sites-available/ \
 	&& rm /etc/nginx/sites-enabled/default \

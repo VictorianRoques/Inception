@@ -1,12 +1,21 @@
-version: "3.4"
+version: "3.3"
 services:
  web:
    build:
     context: ./requirements/nginx/
    ports:
      - "443:443"
- php:
+   volumes:
+    - wordpress:/var/www/html
+
+ wordpress:
   build:
-   context: ./requirements/php
+   context: ./requirements/wordpress
+  restart: always
   ports:
     - "9000:9000"
+  volumes:
+    - wordpress:/var/www/html
+
+volumes:
+  wordpress:

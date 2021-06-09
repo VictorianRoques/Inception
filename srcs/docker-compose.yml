@@ -3,19 +3,20 @@ services:
  web:
    build:
     context: ./requirements/nginx/
+   image: nginx
    ports:
      - "443:443"
    volumes:
-    - wordpress:/var/www/html
+    - /media/sf_inception/wp-files:/var/www/html
+   links:
+    - wordpress
 
  wordpress:
   build:
    context: ./requirements/wordpress
+  image: wordpress
   restart: always
   ports:
     - "9000:9000"
   volumes:
-    - wordpress:/var/www/html
-
-volumes:
-  wordpress:
+    - /media/sf_inception/wp-files:/var/www/html

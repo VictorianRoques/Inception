@@ -7,11 +7,8 @@ RUN apt update -y && apt install -y \
 
 RUN mkdir -p /var/www/html
 
-RUN chown -R www-data:www-data /var/www/html/ \
-	&& chmod 777 /var/www/html/
+RUN echo "listen = 9000" >> /etc/php/7.3/fpm/pool.d/www.conf
 
-COPY www.conf .
-RUN mv www.conf /etc/php/7.3/fpm/pool.d/www.conf
 RUN service php7.3-fpm start
 
 EXPOSE 9000

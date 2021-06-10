@@ -1,22 +1,58 @@
 version: "3.3"
 services:
- web:
-   build:
-    context: ./requirements/nginx/
-   image: nginx
-   ports:
-     - "443:443"
-   volumes:
-    - /media/sf_inception/wp-files:/var/www/html
-   links:
-    - wordpress
+  db:
+    container_name: mysql
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - wp_db:/var/lib/mysql/
+    env_file:
+      - .env
+    networks:
+      - wp_db
 
- wordpress:
-  build:
-   context: ./requirements/wordpress
-  image: wordpress
-  restart: always
-  ports:
-    - "9000:9000"
-  volumes:
-    - /media/sf_inception/wp-files:/var/www/html
+  wordpress:
+    depends_on:
+      - db
+    build:
+      context: ./requirements/wordpress
+    image: wordpress
+    volumes:
+      - wp-files:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - wp_web
+      - wp_db
+    restart: always
+
+  web:
+    build:
+      context: ./requirements/nginx/
+    image: nginx
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - wp-files:/var/www/html
+    networks:
+      - wp_web
+
+networks:
+  wp_db:
+  wp_web:
+
+volumes:
+  wp-files:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /Users/viroques/Documents/inception/wp-files
+
+  wp_db:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /Users/viroques/Documents/inception/db

@@ -5,7 +5,7 @@ RUN apt update -y && apt install -y \
 	php7.3-mysql \
 	wget
 
-RUN mkdir -p /var/www/html
+RUN mkdir -p /var/www/html/wordpress
 
 RUN echo "listen = 9000" >> /etc/php/7.3/fpm/pool.d/www.conf
 

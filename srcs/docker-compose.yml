@@ -1,8 +1,9 @@
 version: "3.3"
 services:
-  db:
-    container_name: mysql
-    image: mysql:5.7
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    image: mariadb
     restart: always
     volumes:
       - wp_db:/var/lib/mysql/
@@ -13,7 +14,7 @@ services:
 
   wordpress:
     depends_on:
-      - db
+      - mariadb
     build:
       context: ./requirements/wordpress
     image: wordpress
@@ -26,7 +27,7 @@ services:
       - wp_db
     restart: always
 
-  web:
+  nginx:
     build:
       context: ./requirements/nginx/
     image: nginx
@@ -48,11 +49,11 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /Users/viroques/Documents/inception/wp-files
+      device: /home/viroques/data/wp-files
 
   wp_db:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: /Users/viroques/Documents/inception/db
+      device: /home/viroques/data/db
